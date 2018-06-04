@@ -17,7 +17,7 @@ export default class DocState extends BaseDoc {
   }
 
   @action editContext () {
-
+    this.store.goTo('ctx', {doc: this.doc})
   }
 
 }

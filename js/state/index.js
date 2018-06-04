@@ -5,6 +5,7 @@ import {LINKS} from '../constants'
 
 import DocState from './doc/doc'
 import PageState from './doc/page'
+import CtxState from './doc/page'
 
 export default class AppState {
   //
@@ -57,6 +58,10 @@ export default class AppState {
 
   showPageEditView (doc, page) {
     this.cv = new PageState(this, doc, page)
+  }
+
+  showCtxEditView (doc) {
+    this.cv = new CtxState(this, doc)
   }
 
   // showEntityListView() {
