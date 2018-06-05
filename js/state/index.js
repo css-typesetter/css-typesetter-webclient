@@ -5,7 +5,7 @@ import {LINKS} from '../constants'
 
 import DocState from './doc/doc'
 import PageState from './doc/page'
-import CtxState from './doc/page'
+import CtxState from './doc/ctx'
 
 export default class AppState {
   //

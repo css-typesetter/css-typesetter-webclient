@@ -1,18 +1,34 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
-// import CMirrorEditor from '../input/editor'
+import CMirrorEditor from '../input/editor'
 
 const CtxEditView = ({store}) => {
   //
   const cv = store.cv
-  const rows = []
-  for (let k in cv.context) {
-    rows.push(<div key={k}><b>{k}</b>: {cv.context[k]}</div>)
-  }
   return cv.loading ? 'loading' : (
     <div>
-      {rows}
-      <button onClick={() => cv.cancel()}>back</button>
+      {
+        cv.context.map((i, idx) => {
+          return (cv.origRow === i) ? (
+            <div key={idx}>
+              <button onClick={() => cv.save()} disabled={cv.saving}>save</button>
+              <button onClick={() => cv.cancel()} disabled={cv.saving}>cancel</button>&nbsp;
+              <input type='text' value={cv.editedKey} onChange={(evt) => cv.onChange('key', evt.target.value)} />&nbsp;:&nbsp;{
+                cv.richeditor
+                  ? <CMirrorEditor value={cv.editedVal} onChange={cv.onChange.bind(cv, 'val')} />
+                  : <input type='text' value={cv.editedVal} onChange={(evt) => cv.onChange('val', evt.target.value)} />
+              }
+              <button onClick={() => cv.switchEditor()}>sw.editor</button>
+            </div>
+          ) : (
+            <div key={idx}>
+              <button onClick={() => cv.edit(i)}>edit</button>&nbsp;
+              <b>{i.key}</b>&nbsp;:&nbsp;{i.val}
+            </div>
+          )
+        })
+      }
+      <button onClick={() => cv.add()}>add</button>
     </div>
   )
 }
