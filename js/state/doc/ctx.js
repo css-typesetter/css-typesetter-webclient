@@ -31,6 +31,7 @@ export default class CtxEditState extends BaseDoc {
   @action onSaved (data) {
     this.saving = false
     this.origRow = null
+    this.store.addMessage(this.store.__('saved'))
   }
 
   @action cancel () {

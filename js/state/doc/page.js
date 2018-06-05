@@ -24,13 +24,14 @@ export default class PageEditState extends BaseDoc {
   @action save () {
     this.saving = true
     const p = this.page === '_new'
-      ? axios.post(`${Conf.api_url}/${this.doc}/page`, this.content)
-      : axios.put(`${Conf.api_url}/${this.doc}/page/${this.page}`, this.content)
+      ? axios.post(`${Conf.api_url}/${this.doc}/page`, {content: this.content})
+      : axios.put(`${Conf.api_url}/${this.doc}/page/${this.page}`, {content: this.content})
     p.then(this.onSaved.bind(this)).catch(this.store.onError)
   }
 
   @action onSaved (data) {
     this.saving = false
+    this.store.addMessage(this.store.__('saved'))
   }
 
   @action cancel () {

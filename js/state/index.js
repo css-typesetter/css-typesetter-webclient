@@ -1,7 +1,6 @@
 import {observable, computed, action} from 'mobx'
 import {RouterStore} from 'mobx-router'
 import cs from './i18n/cs'
-import {LINKS} from '../constants'
 
 import DocState from './doc/doc'
 import PageState from './doc/page'
@@ -30,7 +29,7 @@ export default class AppState {
 
   @observable messages = observable.map({})
 
-  @action addMessage(text, type, timeout = 2000) {
+  @action addMessage(text, type = 'info', timeout = 2000) {
     const message = {text, type, timeout}
     this.messages.set(text, message)
     if(timeout > 0) {
