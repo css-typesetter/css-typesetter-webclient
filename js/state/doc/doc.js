@@ -16,6 +16,10 @@ export default class DocState extends BaseDoc {
     window.open(`${Conf.api_url}/${this.doc}/render.pdf`)
   }
 
+  viewDoc (page) {
+    window.open(`${Conf.api_url}/${this.doc}/index.html`)
+  }
+
   @action editContext () {
     this.store.goTo('ctx', {doc: this.doc})
   }
