@@ -13,14 +13,12 @@ const UnObservedEditor = ({cv, ...rest}) => {
 const PageListView = ({store}) => {
   //
   const cv = store.cv
-  return cv.loading ? 'loading' : (
-    <div>
-      <UnObservedEditor cv={cv} onChange={cv.onChange.bind(cv)} />
-      <div className='btn-group'>
-        <SaveButt cv={cv} />
-        <button className='btn btn-secondary' onClick={() => cv.cancel()} disabled={cv.saving}>cancel</button>
-      </div>
+  return cv.loading ? 'loading' : [
+    <UnObservedEditor cv={cv} onChange={cv.onChange.bind(cv)} />,
+    <div className='btn-group'>
+      <SaveButt cv={cv} />
+      <button className='btn btn-secondary' onClick={() => cv.cancel()} disabled={cv.saving}>cancel</button>
     </div>
-  )
+  ]
 }
 export default inject('store')(observer(PageListView))

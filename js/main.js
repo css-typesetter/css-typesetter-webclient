@@ -11,8 +11,4 @@ startRouter(views, store)
 // init react components part using the only prop: the store
 import { App } from './components/app'
 const mount = document.getElementById('app')  // mountpoint
-render((
-  <div className='view-wrapper container-fluid'>
-    <App store={store} />
-  </div>
-), mount)  // and final render
+render(<App store={store} />, mount)  // and final render
