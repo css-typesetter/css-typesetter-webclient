@@ -13,8 +13,9 @@ const UnObservedEditor = ({cv, ...rest}) => {
 const PageListView = ({store}) => {
   //
   const cv = store.cv
+  const mode = cv.cssmode ? 'css' : 'xml'
   return cv.loading ? 'loading' : [
-    <UnObservedEditor cv={cv} onChange={cv.onChange.bind(cv)} />,
+    <UnObservedEditor cv={cv} onChange={cv.onChange.bind(cv)} mode={mode} />,
     <div className='btn-group'>
       <SaveButt cv={cv} />
       <button className='btn btn-secondary' onClick={() => cv.cancel()} disabled={cv.saving}>cancel</button>

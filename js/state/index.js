@@ -5,6 +5,7 @@ import cs from './i18n/cs'
 import DocState from './doc/doc'
 import PageState from './doc/page'
 import CtxState from './doc/ctx'
+import StyleState from './doc/style'
 
 export default class AppState {
   //
@@ -61,6 +62,10 @@ export default class AppState {
 
   showCtxEditView (doc) {
     this.cv = new CtxState(this, doc)
+  }
+
+  showStyleEditView (doc) {
+    this.cv = new StyleState(this, doc)
   }
 
   // showEntityListView() {

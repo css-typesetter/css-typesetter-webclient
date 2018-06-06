@@ -24,4 +24,7 @@ export default class DocState extends BaseDoc {
     this.store.goTo('ctx', {doc: this.doc})
   }
 
+  @action editStyle () {
+    this.store.goTo('style', {doc: this.doc})
+  }
 }

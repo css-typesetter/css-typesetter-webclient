@@ -6,9 +6,11 @@ export default class BaseDocState {
   constructor (store, doc) {
     this.doc = doc
     this.store = store
-    axios.get(`${Conf.api_url}/${doc}`)
-    .then(this.onLoaded.bind(this))
-    .catch(store.onError)
+    this.load(doc).then(this.onLoaded.bind(this)).catch(store.onError)
+  }
+
+  load (doc) {
+    return axios.get(`${Conf.api_url}/${doc}`)
   }
 
   @observable pages = []

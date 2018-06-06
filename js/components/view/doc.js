@@ -10,6 +10,7 @@ const PageListView = ({store}) => {
       <h1>{store.__('document')}: {store.router.params.doc}</h1>
       <div className='btn-group'>
         <button className='btn btn-primary' onClick={() => cv.editContext()}>{store.__('edit context')}</button>
+        <button className='btn btn-warning' onClick={() => cv.editStyle()}>{store.__('edit style')}</button>
         <button className='btn btn-success' onClick={() => cv.editPage('_new')}>{store.__('add page')}</button>
         <button className='btn btn-light' onClick={() => cv.viewDoc()}>{store.__('view in browser')}</button>
         <button className='btn btn-dark' onClick={() => cv.renderDoc()}>{store.__('render PDF')}</button>

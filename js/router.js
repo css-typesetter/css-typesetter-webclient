@@ -20,6 +20,14 @@ const views = {
     // },
     onEnter: (route, params, store) => store.showCtxEditView(params.doc)
   }),
+  style: new Route({
+    path: '/:doc/style',
+    component: <PageEditView />,
+    // beforeExit: (route, params, store, queryParams) => {
+    //   store.beforeListViewExit(route, params, store, queryParams)
+    // },
+    onEnter: (route, params, store) => store.showStyleEditView(params.doc)
+  }),
   page: new Route({
     path: '/:doc/:page',
     component: <PageEditView />,
