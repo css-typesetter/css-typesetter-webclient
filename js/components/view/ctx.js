@@ -6,13 +6,17 @@ const UnObservedEditor = ({cv, ...rest}) => {
   return <CMirrorEditor value={cv.editedVal} {...rest} />
 }
 
+const _valStyle = {
+  maxWidth: '30em', display: 'inline-block', overflow: 'hidden', textOverflow: 'ellipsis'
+}
+
 const CtxEditView = ({store}) => {
   //
   const cv = store.cv
   return cv.loading ? store.__('loading') : (
     <div>
       {
-        cv.context.map((i, idx) => {
+        cv.context.sort((a, b) => a.key.localeCompare(b.key)).map((i, idx) => {
           return (cv.origRow === i) ? (
             <div key={idx}>
               <button className='btn btn-primary' onClick={() => cv.save()} disabled={cv.saving}>{store.__('save')}</button>
@@ -27,7 +31,7 @@ const CtxEditView = ({store}) => {
           ) : (
             <div key={idx}>
               <button className='btn btn-primary btn-sm' onClick={() => cv.edit(i)}>{store.__('edit')}</button>&nbsp;
-              <b>{i.key}</b>&nbsp;:&nbsp;{i.val}
+              <b>{i.key}</b>&nbsp;:&nbsp;<span>{i.val.substr(0, 40)}</span>
             </div>
           )
         })

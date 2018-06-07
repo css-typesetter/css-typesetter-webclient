@@ -32,9 +32,14 @@ export default class CtxEditState extends BaseDoc {
     this.saving = false
     this.origRow = null
     this.store.addMessage(this.store.__('saved'))
+    this.adding === true && delete this.adding
   }
 
   @action cancel () {
+    if (this.adding === true) {
+      delete this.adding
+      this.context.remove(this.origRow)
+    }
     this.origRow = null
   }
 
@@ -44,6 +49,13 @@ export default class CtxEditState extends BaseDoc {
 
   @action switchEditor () {
     this.richeditor = !this.richeditor
+  }
+
+  add () {
+    this.adding = true
+    this.origRow = {}
+    this.context.push(this.origRow)
+    this.editedKey = this.editedVal = ''
   }
 
   @action edit (row) {
