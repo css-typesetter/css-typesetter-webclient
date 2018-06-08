@@ -2,19 +2,30 @@ import React from 'react'
 import {inject, observer} from 'mobx-react'
 import CMirrorEditor from '../input/editor'
 
+const Preview = observer(({cv}) => {
+  return <div className='regular' dangerouslySetInnerHTML={{__html: cv.editedVal}} />
+})
+
 const UnObservedEditor = ({cv, ...rest}) => {
-  return <CMirrorEditor value={cv.editedVal} {...rest} />
+  return (
+    <div>
+      <div style={{width: '25%', float: 'right'}}><Preview cv={cv} /></div>
+      <div style={{width: '70%'}}><CMirrorEditor value={cv.editedVal} {...rest} /></div>
+    </div>
+  )
 }
 
-const _valStyle = {
-  maxWidth: '30em', display: 'inline-block', overflow: 'hidden', textOverflow: 'ellipsis'
-}
+// const _valStyle = {
+//   maxWidth: '30em', display: 'inline-block', overflow: 'hidden', textOverflow: 'ellipsis'
+// }
 
 const CtxEditView = ({store}) => {
   //
   const cv = store.cv
   return cv.loading ? store.__('loading') : (
     <div>
+      <button className='btn btn-success' onClick={() => cv.add()}>{store.__('add')}</button>
+      <hr />
       {
         cv.context.sort((a, b) => a.key.localeCompare(b.key)).map((i, idx) => {
           return (cv.origRow === i) ? (
@@ -27,6 +38,8 @@ const CtxEditView = ({store}) => {
                   : <input type='text' value={cv.editedVal} onChange={(evt) => cv.onChange('val', evt.target.value)} />
               }
               <button className='btn btn-warning' onClick={() => cv.switchEditor()}>{store.__('switch editor')}</button>
+              <button className='btn btn-success' onClick={() => cv.mardownify()}>{store.__('mardownify')}</button>
+              <button className='btn btn-error' onClick={() => cv.hyphenate()}>{store.__('hyphenate')}</button>
             </div>
           ) : (
             <div key={idx}>
@@ -36,8 +49,7 @@ const CtxEditView = ({store}) => {
           )
         })
       }
-      <hr />
-      <button className='btn btn-success' onClick={() => cv.add()}>{store.__('add')}</button>
+      {cv.editorUpdated.toString()}
     </div>
   )
 }

@@ -1,5 +1,8 @@
+/* global marked */
 import { action, computed, observable } from 'mobx'
 import axios from 'axios'
+import urlencode from 'urlencode'
+import xml from 'xml-parse'
 import BaseDoc from './base'
 
 export default class CtxEditState extends BaseDoc {
@@ -14,6 +17,7 @@ export default class CtxEditState extends BaseDoc {
   @observable editedVal = null
   @observable origRow = null
   @observable richeditor = false
+  @observable editorUpdated = new Date()
 
   @action onChange (s) {
     this.content = s
@@ -53,9 +57,47 @@ export default class CtxEditState extends BaseDoc {
 
   add () {
     this.adding = true
-    this.origRow = {}
+    this.origRow = {key: '', val: ''}
     this.context.push(this.origRow)
     this.editedKey = this.editedVal = ''
+  }
+
+  @action mardownify () {
+    this.editedVal = marked(this.editedVal)
+    this.editorUpdated = new Date()
+  }
+
+  hyphenateText (node) {
+    const service = 'https://pyphen-online-hyphenator.herokuapp.com/'
+    const content = urlencode(node.text)
+    const url = `${service}?lang=cs&alter=%26shy%3B&content=${content}`
+    return axios.get(url).then(res => {
+      node.text = res.data
+    }).catch(() => {})
+  }
+
+  // for recursion ..
+  hyphenateNodeList (nodeList) {
+    const promises = []
+    nodeList.map(i => {
+      if (i.type === 'text') {
+        promises.push(this.hyphenateText(i))
+      } else {
+        promises.push(...this.hyphenateNodeList(i.childNodes))
+      }
+    })
+    return promises
+  }
+
+  hyphenate () {
+    const xmlDoc = xml.parse(this.editedVal)
+    const promises = this.hyphenateNodeList(xmlDoc)
+    Promise.all(promises).then(() => this.hyphenated(xmlDoc))
+  }
+
+  @action hyphenated (xmlDoc) {
+    this.editedVal = xml.stringify(xmlDoc, 2)
+    this.editorUpdated = new Date()
   }
 
   @action edit (row) {
