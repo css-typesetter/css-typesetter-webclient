@@ -67,12 +67,16 @@ export default class CtxEditState extends BaseDoc {
     this.editorUpdated = new Date()
   }
 
+  addNbsp (text) {
+    return text.replace(/(\s+\S) (\S+)/g, '$1&nbsp;$2')
+  }
+
   hyphenateText (node) {
     const service = 'https://pyphen-online-hyphenator.herokuapp.com/'
     const content = urlencode(node.text)
     const url = `${service}?lang=cs&alter=%26shy%3B&content=${content}`
     return axios.get(url).then(res => {
-      node.text = res.data
+      node.text = this.addNbsp(res.data)
     }).catch(() => {})
   }
 

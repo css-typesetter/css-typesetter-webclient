@@ -9,7 +9,7 @@ const Preview = observer(({cv}) => {
 const UnObservedEditor = ({cv, ...rest}) => {
   return (
     <div>
-      <div style={{width: '25%', float: 'right', marginRight: '1em'}}><Preview cv={cv} /></div>
+      <div style={{width: '25%', float: 'right', margin: '0 1em'}}><Preview cv={cv} /></div>
       <div style={{width: '74%'}}><CMirrorEditor value={cv.editedVal} {...rest} /></div>
     </div>
   )
