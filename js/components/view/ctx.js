@@ -38,7 +38,7 @@ const CtxEditView = ({store}) => {
                   : <input type='text' value={cv.editedVal} onChange={(evt) => cv.onChange('val', evt.target.value)} />
               }
               <button className='btn btn-warning' onClick={() => cv.switchEditor()}>{store.__('switch editor')}</button>
-              <button className='btn btn-success' onClick={() => cv.mardownify()}>{store.__('mardownify')}</button>
+              <button className='btn btn-success' onClick={() => cv.mardownify()}>{store.__('to html')}</button>
               <button className='btn btn-error' onClick={() => cv.hyphenate()}>{store.__('hyphenate')}</button>
             </div>
           ) : (

@@ -11,7 +11,7 @@
     "start": "./node_modules/.bin/webpack-dev-server --content-base build/ --inline --hot --history-api-fallback",
     "test": "NODE_ENV=test && mocha './js/**/*.spec.js' --compilers js:babel-core/register --require test/setup.js",
     "test:watch": "npm test -- --watch",
-    "extract": "./node_modules/.bin/extract-gettext -p 'export default ' -o js/state/i18n/cs.js js/"
+    "extract": "./node_modules/.bin/extract-gettext -p 'export default ' --lang cs -o js/state/i18n js/"
   },
   "keywords": [],
   "author": "vencax <vencax77@gmail.com>",

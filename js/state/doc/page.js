@@ -32,6 +32,9 @@ export default class PageEditState extends BaseDoc {
   @action onSaved (data) {
     this.saving = false
     this.store.addMessage(this.store.__('saved'))
+    if (this.page === '_new') {
+      this.cancel()
+    }
   }
 
   @action cancel () {
