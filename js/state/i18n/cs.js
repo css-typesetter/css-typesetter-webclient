@@ -1,5 +1,6 @@
 export default {
   "add": "přidat",
+  "back": "zpět",
   "add page": "přidat stránku",
   "cancel": "cancel",
   "document": "dokument",

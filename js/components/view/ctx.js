@@ -25,6 +25,7 @@ const CtxEditView = ({store}) => {
   return cv.loading ? store.__('loading') : (
     <div>
       <button className='btn btn-success' onClick={() => cv.add()}>{store.__('add')}</button>
+      <button className='btn btn-error' onClick={() => cv.back()}>{store.__('back')}</button>
       <hr />
       {
         cv.context.sort((a, b) => a.key.localeCompare(b.key)).map((i, idx) => {
