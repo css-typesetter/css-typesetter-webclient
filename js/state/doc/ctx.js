@@ -2,7 +2,7 @@
 import { action, computed, observable } from 'mobx'
 import axios from 'axios'
 import urlencode from 'urlencode'
-import xml from 'xml-parse'
+import sax from 'sax'
 import BaseDoc from './base'
 
 export default class CtxEditState extends BaseDoc {
@@ -71,36 +71,46 @@ export default class CtxEditState extends BaseDoc {
     return text.replace(/(\s+\S) (\S+)/g, '$1&nbsp;$2')
   }
 
-  hyphenateText (node) {
+  hyphenateText (text, parts, idx) {
     const service = 'https://pyphen-online-hyphenator.herokuapp.com/'
-    const content = urlencode(node.text)
+    const content = urlencode(text)
     const url = `${service}?lang=cs&alter=%26shy%3B&content=${content}`
     return axios.get(url).then(res => {
-      node.text = this.addNbsp(res.data)
+      parts[idx] = this.addNbsp(res.data)
     }).catch(() => {})
   }
 
-  // for recursion ..
-  hyphenateNodeList (nodeList) {
-    const promises = []
-    nodeList.map(i => {
-      if (i.type === 'text') {
-        promises.push(this.hyphenateText(i))
-      } else {
-        promises.push(...this.hyphenateNodeList(i.childNodes))
-      }
-    })
-    return promises
-  }
-
   hyphenate () {
-    const xmlDoc = xml.parse(this.editedVal)
-    const promises = this.hyphenateNodeList(xmlDoc)
-    Promise.all(promises).then(() => this.hyphenated(xmlDoc))
+    const parser = sax.parser(false)
+    const final = []
+    const promises = []
+
+    parser.onerror = function (e) {
+      alert(e)
+    }
+    parser.ontext = (t) => {
+      final.push('to')
+      promises.push(this.hyphenateText(t, final, final.length - 1))
+    }
+    parser.onopentag = (node) => {
+      final.push(`<${node.name}>`)
+    }
+    parser.onclosetag = (name) => {
+      final.push(`</${name}>`)
+    }
+    parser.onend = () => {
+      Promise.all(promises).then(() => {
+        const result = final.slice(1, -1).join('')
+        this.hyphenated(result)
+      })
+    }
+
+    parser.write(`<div>${this.editedVal.toString()}</div>`)
+    parser.close()
   }
 
-  @action hyphenated (xmlDoc) {
-    this.editedVal = xml.stringify(xmlDoc, 2)
+  @action hyphenated (result) {
+    this.editedVal = result
     this.editorUpdated = new Date()
   }
 

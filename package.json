@@ -38,11 +38,11 @@
     "react-bootstrap": "^0.31.5",
     "react-bootstrap-typeahead": "^2.5.1",
     "react-codemirror2": "^5.0.4",
+    "sax": "^1.2.4",
     "tape": "^4.6.2",
     "urlencode": "^1.1.0",
     "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.5.1",
-    "xml-parse": "^0.3.1"
+    "webpack-dev-server": "^2.5.1"
   },
   "devDependencies": {
     "babel-register": "^6.16.3",
